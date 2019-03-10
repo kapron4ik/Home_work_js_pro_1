@@ -1,0 +1,65 @@
+<table id="myTable2">
+<tr>
+<!--При щелчке по заголовку запустите функцию sortTable с параметром,
+0 для сортировки по именам, 1 для сортировки по стране: -->
+<th onclick="sortTable(0)">Name</th>
+<th onclick="sortTable(1)">Country</th>
+</tr>
+...
+
+<script>
+function sortTable(n) {
+  var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+  table = document.getElementById("myTable2");
+  switching = true;
+  // Установите направление сортировки по возрастанию:
+  dir = "asc"; 
+  /* Сделайте цикл, который будет продолжаться до
+переключение(switching) не было сделано:: */
+  while (switching) {
+	// Начните с того, что переключение(switching) не выполняется
+    switching = false;
+    rows = table.rows;
+    /* Перебрать все строки таблицы (кроме
+первый, который содержит заголовки таблицы): */
+    for (i = 1; i < (rows.length - 1); i++) {
+      // Начнем с того, что не должно быть переключений(switching):
+      shouldSwitch = false;
+      /* Получите два элемента, которые вы хотите сравнить,
+один из текущего ряда и один из следующего: */
+      x = rows[i].getElementsByTagName("TD")[n];
+      y = rows[i + 1].getElementsByTagName("TD")[n];
+      /* Проверьте, должны ли два ряда поменяться местами,
+в зависимости от направления, asc или desc: */
+      if (dir == "asc") {
+        if(x.innerHTML.toLowerCase()> y.innerHTML.toLowerCase()) {
+          // Если это так, отметьте как переключатель и разорвать петлю:
+          shouldSwitch = true;
+          break;
+        }
+      } else if (dir == "desc") {
+        if(x.innerHTML.toLowerCase()< y.innerHTML.toLowerCase()) {
+          // Если это так, отметьте как переключатель и разорвать петлю:
+          shouldSwitch = true;
+          break;
+        }
+      }
+    }
+    if (shouldSwitch) {
+      /* Если переключатель был отмечен, сделайте переключатель
+и отметьте, что переключение было сделано: */
+     rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+      // Каждый раз, когда переключение сделано, увеличьте это число на 1:
+      switchcount ++; 
+    } else {
+      /* Если переключение не было выполнено И направление «asc»,
+установите направление на «desc» и снова запустите цикл while. */
+      if (switchcount == 0&& dir == "asc") {
+        dir = "desc";
+        switching = true;
+      }
+    }
+  }
+}
+</script>
